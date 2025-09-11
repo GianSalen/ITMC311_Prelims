@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../widgets/build_info_tile.dart';
 
 class loginWidget extends StatelessWidget{
   final String baseUrl;
@@ -51,8 +52,8 @@ class loginWidget extends StatelessWidget{
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildInfoTile(Icons.vpn_key, 'Code', code),
-            _buildInfoTile(Icons.perm_identity, 'ID', id),
+            buildInfoTile(Icons.vpn_key, 'Code', code),
+            buildInfoTile(Icons.perm_identity, 'ID', id),
             TextField(
               controller: usernameController,
               decoration: InputDecoration(
@@ -81,61 +82,12 @@ class loginWidget extends StatelessWidget{
                 padding: EdgeInsets.symmetric(vertical: isMobile ? 8 : 12),
               ),
               child: Text(
-                "Enter",
+                "login",
                 style: TextStyle(fontSize: isMobile ? 14 : 18),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-    // "borrowed" from xavlog
-    Widget _buildInfoTile(IconData icon, String label, String value) {
-    final fontSize = 14;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(fontSize * 0.4),
-            decoration: BoxDecoration(
-              color: const Color(0xFF071D99).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              icon,
-              color: const Color(0xFF071D99),
-              size: fontSize * 1.2,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: fontSize * 1.2,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

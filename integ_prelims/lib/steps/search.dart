@@ -1,42 +1,28 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
+import '../widgets/build_info_tile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../widgets/build_info_tile.dart';
 
-class loginWithAuth extends StatelessWidget{
+class SearchOwn extends StatelessWidget{
   final String baseUrl;
-  final String code;
-  final String username;
-  final String password;
-  final String age;
+  final String id;
   final void Function(Map<String, dynamic> data) onComplete;
-
-  const loginWithAuth({
+  const SearchOwn({
     Key? key,
     required this.baseUrl,
-    required this.code,
-    required this.username,
-    required this.password,
-    required this.age,
+    required this.id,
     required this.onComplete,
-  }) : super(key: key);
+  }): super(key:key);
 
-  Future<void> login (BuildContext context) async {
-    try {
-      final response = await http.post(
-        Uri.parse("$baseUrl/login"),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'username': username,
-          'password': password,
-          'age' : age,
-          'authKey' : code,
-        }),
-      );
+  Future <void> getOwn (BuildContext context) async {
+    try{
+      final response = await http.get(Uri.parse("$baseUrl/users/$id")).timeout(Duration(seconds: 10));
       final data = json.decode(response.body) as Map<String, dynamic>;
       onComplete(data);
-    } catch (e) {
-      onComplete({'message': "Failed to post: $e"});
+
+    }
+    catch(e){
+      onComplete ({"message" : "Fetch Failed: $e"});
     }
   }
 
@@ -54,14 +40,11 @@ class loginWithAuth extends StatelessWidget{
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            buildInfoTile(Icons.person, 'username', username),
-            buildInfoTile(Icons.lock, 'password', password),
-            buildInfoTile(Icons.cake, 'age', age),
-            buildInfoTile(Icons.vpn_key, 'Code', code),
+            buildInfoTile(Icons.perm_identity, 'ID', id),
             SizedBox(height: isMobile ? 10 : 20),
             ElevatedButton(
               onPressed: (){
-                login(context);
+                getOwn(context);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, isMobile ? 32 : 40),
@@ -77,5 +60,4 @@ class loginWithAuth extends StatelessWidget{
       ),
     );
   }
-
 }

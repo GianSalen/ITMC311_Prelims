@@ -5,6 +5,7 @@ import 'widgets/app_header.dart';
 import 'steps/signup.dart';
 import 'steps/login.dart';
 import 'steps/login_plus_plus.dart';
+import 'steps/search.dart';
 
 void main() {
   runApp(const MyApp()); 
@@ -132,16 +133,27 @@ class _MyHomepageState extends State<MyHomepage>
           });
         },
       ),
-      () => loginWithAuth(baseUrl: baseUrl, code: code,
+      () => loginWithAuth(
+        baseUrl: baseUrl, code: code,
         username: _usernameController.text,
         password: _passwordController.text,
         age : _ageController.text,
         onComplete: (data) {
           setState(() {
             message = data['message'] ?? '';
-            // currentStep = 4;
+            currentStep = 4;
           });
         },
+      ),
+    () => SearchOwn(
+      baseUrl: baseUrl, id: id,
+      onComplete:(data){
+        setState((){
+          message = data['message'] ?? '';
+          answers= data['user'];
+          // currentStep = 5;
+        });
+      }
       )
     ];
   }

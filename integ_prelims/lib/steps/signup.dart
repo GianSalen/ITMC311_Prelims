@@ -117,7 +117,7 @@ class SignupStep extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: isMobile ? 8 : 12),
               ),
               child: Text(
-                "Enter",
+                "Sign Up",
                 style: TextStyle(fontSize: isMobile ? 14 : 18),
               ),
             ),
