@@ -5,6 +5,11 @@ import 'widgets/app_header.dart';
 import 'steps/signup.dart';
 import 'steps/login.dart';
 import 'steps/login_plus_plus.dart';
+import 'steps/modify_username.dart';
+import 'steps/add_pet.dart';
+import 'steps/view_pet_1.dart';
+import 'steps/view_pet_2.dart';
+import 'steps/re_fetch.dart';
 import 'steps/search.dart';
 
 void main() {
@@ -51,11 +56,14 @@ class _MyHomepageState extends State<MyHomepage>
   String message = "Loading...";
   String id = '';
   String code = '';
+  String petId = '';
+
 
   final String baseUrl = "https://prelim-exam.onrender.com";
   int currentStep = 0;
-  late List<Widget Function()> stepWidgets;
+  late List<Widget Function()> stepWidgets; //step widget im stuck
   late List<String> answers;
+  late List<Map<String,dynamic>> pets;
 
   Future<void> fetchInitialData() async {
     try {
@@ -145,16 +153,64 @@ class _MyHomepageState extends State<MyHomepage>
           });
         },
       ),
-    () => SearchOwn(
+    () => ModifyUsername(
       baseUrl: baseUrl, id: id,
-      onComplete:(data){
-        setState((){
+      usernameController: _usernameController,
+      onComplete: (data) {
+        setState(() {
           message = data['message'] ?? '';
-          answers= data['user'];
-          // currentStep = 5;
+          currentStep = 5;
         });
-      }
-      )
+      },
+     ),
+    () => AddPet(baseUrl: baseUrl, id: id, 
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          petId = data['petId'] ?? '';
+          currentStep = 6;
+        });
+      },
+    ),
+    () => ViewPet1(baseUrl: baseUrl, id: id, petId: petId,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          pets = (data['pets'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+          currentStep = 7;
+        });
+      },
+    ),
+    () => ViewPet2(baseUrl: baseUrl, pets: pets,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 8;
+        });
+      },
+    ),
+    () => ReFetch(baseUrl: baseUrl, id: id,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 9;
+        });
+      },
+    ),
+    
+
+
+
+    // () => SearchOwn(
+    //   baseUrl: baseUrl, id: id,
+    //   onComplete:(data){
+    //     setState((){
+    //       message = data['message'] ?? '';
+    //       answers= data['user'];
+    //       // currentStep = 5;
+    //     });
+    //   }
+    // )
     ];
   }
 

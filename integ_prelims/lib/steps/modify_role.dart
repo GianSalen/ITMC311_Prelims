@@ -1,28 +1,33 @@
-import "package:flutter/material.dart";
-import '../widgets/build_info_tile.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../widgets/build_info_tile.dart';
 
-class SearchOwn extends StatelessWidget{
+class ModifyRole extends StatelessWidget{
   final String baseUrl;
-  final String id;
+  final Map<String, dynamic> user;
   final void Function(Map<String, dynamic> data) onComplete;
-  const SearchOwn({
+
+  const ModifyRole({
     Key? key,
     required this.baseUrl,
-    required this.id,
+    required this.user,
     required this.onComplete,
-  }): super(key:key);
+  }) : super(key: key);
 
-  Future <void> getOwn (BuildContext context) async {
-    try{
-      final response = await http.get(Uri.parse("$baseUrl/users/$id")).timeout(Duration(seconds: 10));
+  Future<void> modifyRole (BuildContext context) async {
+    try {
+      final response = await http.patch(
+        Uri.parse("$baseUrl/users/${user['id']}"),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'role': "admin",
+        }),
+      );
       final data = json.decode(response.body) as Map<String, dynamic>;
       onComplete(data);
-
-    }
-    catch(e){
-      onComplete ({"message" : "Fetch Failed: $e"});
+    } catch (e) {
+      onComplete({'message': "Failed to post: $e"});
     }
   }
 
@@ -40,18 +45,18 @@ class SearchOwn extends StatelessWidget{
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            buildInfoTile(Icons.perm_identity, 'ID', id),
+            buildInfoTile(Icons.badge, 'Role', 'admin'),
             SizedBox(height: isMobile ? 10 : 20),
             ElevatedButton(
               onPressed: (){
-                getOwn(context);
+                modifyRole(context);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, isMobile ? 32 : 40),
                 padding: EdgeInsets.symmetric(vertical: isMobile ? 8 : 12),
               ),
               child: Text(
-                "Search",
+                "Modify",
                 style: TextStyle(fontSize: isMobile ? 14 : 18),
               ),
             ),
@@ -60,4 +65,5 @@ class SearchOwn extends StatelessWidget{
       ),
     );
   }
+
 }
