@@ -12,12 +12,12 @@ class AppHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/CCS.png',
-            width: isMobile ? 40 : 56,
-            height: isMobile ? 40 : 56,
-            fit: BoxFit.contain,
-          ),
+          // Image.asset(
+          //   'assets/images/CCS.png',
+          //   width: isMobile ? 40 : 56,
+          //   height: isMobile ? 40 : 56,
+          //   fit: BoxFit.contain,
+          // ),
           SizedBox(width: isMobile ? 12 : 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

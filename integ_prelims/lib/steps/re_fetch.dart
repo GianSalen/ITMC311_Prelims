@@ -14,7 +14,7 @@ class ReFetch extends StatelessWidget{
     required this.onComplete,
   }) : super(key: key);
 
-  Future <void> viewPet1 (BuildContext context) async {
+  Future <void> reFetch (BuildContext context) async {
     try{
       final response = await http.get(Uri.parse("$baseUrl/pets?userId=$id")).timeout(Duration(seconds: 10));
       final data = json.decode(response.body) as Map<String, dynamic>;
@@ -41,7 +41,7 @@ class ReFetch extends StatelessWidget{
           children: [
             ElevatedButton(
               onPressed: (){
-                viewPet1(context);
+                reFetch(context);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, isMobile ? 32 : 40),

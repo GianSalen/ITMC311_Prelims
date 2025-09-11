@@ -1,42 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../widgets/build_info_tile.dart';
 
-class loginWithAuth extends StatelessWidget{
+class ReFetchAllPets extends StatelessWidget{
   final String baseUrl;
-  final String code;
-  final String username;
-  final String password;
-  final String age;
   final void Function(Map<String, dynamic> data) onComplete;
 
-  const loginWithAuth({
+  ReFetchAllPets({
     Key? key,
     required this.baseUrl,
-    required this.code,
-    required this.username,
-    required this.password,
-    required this.age,
     required this.onComplete,
   }) : super(key: key);
 
-  Future<void> login (BuildContext context) async {
-    try {
-      final response = await http.post(
-        Uri.parse("$baseUrl/login"),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'username': username,
-          'password': password,
-          'age' : age,
-          'authKey' : code,
-        }),
-      );
+  Future <void> reFetchAllPets (BuildContext context) async {
+    try{
+      final response = await http.get(Uri.parse("$baseUrl/pets")).timeout(Duration(seconds: 10));
       final data = json.decode(response.body) as Map<String, dynamic>;
       onComplete(data);
-    } catch (e) {
-      onComplete({'message': "Failed to post: $e"});
+    }
+    catch(e){
+      onComplete ({"message" : "Fetch Failed: $e"});
     }
   }
 
@@ -54,21 +37,16 @@ class loginWithAuth extends StatelessWidget{
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            buildInfoTile(Icons.person, 'username', username),
-            buildInfoTile(Icons.lock, 'password', password),
-            buildInfoTile(Icons.cake, 'age', age),
-            buildInfoTile(Icons.vpn_key, 'Code', code),
-            SizedBox(height: isMobile ? 10 : 20),
             ElevatedButton(
               onPressed: (){
-                login(context);
+                reFetchAllPets(context);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, isMobile ? 32 : 40),
                 padding: EdgeInsets.symmetric(vertical: isMobile ? 8 : 12),
               ),
               child: Text(
-                "Login",
+                "Retry Viewing All Pets",
                 style: TextStyle(fontSize: isMobile ? 14 : 18),
               ),
             ),

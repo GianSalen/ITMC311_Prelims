@@ -39,7 +39,7 @@ class ViewPet2 extends StatelessWidget{
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("First 5 pets:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Text("My pets:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             SizedBox(height: 10),
             if (pets != null && pets!.isNotEmpty)
             ...pets!.take(5).map((pet) => Card(
@@ -49,7 +49,7 @@ class ViewPet2 extends StatelessWidget{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("ID: ${pet['id'] ?? 'N/A'}"),
+                    Text("ID: ${pet['_id'] ?? 'N/A'}"),
                     Text("Owner: ${pet['owner'] ?? 'N/A'}"),
                     Text("Name: ${pet['name'] ?? 'N/A'}"),
                     Text("Type: ${pet['type'] ?? 'N/A'}"),
@@ -58,6 +58,7 @@ class ViewPet2 extends StatelessWidget{
                 ),
               ),
             ))
+            
             else
               Text("No pets found"),
             SizedBox(height: isMobile ? 10 : 20),

@@ -90,7 +90,6 @@ class SignupStep extends StatelessWidget {
               obscureText: true,
               style: TextStyle(fontSize: isMobile ? 14 : 18),
             ),
-            SizedBox(height: isMobile ? 10 : 20),
             if (page == 2) ...[
               SizedBox(height: isMobile ? 8 : 16),
               TextField(

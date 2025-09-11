@@ -10,7 +10,15 @@ import 'steps/add_pet.dart';
 import 'steps/view_pet_1.dart';
 import 'steps/view_pet_2.dart';
 import 'steps/re_fetch.dart';
-import 'steps/search.dart';
+import 'steps/retrieve_data.dart';
+import 'steps/modify_role.dart';
+import 'steps/view_pet_3.dart';
+import 'steps/view_pet_4.dart';
+import 'steps/delete_pet.dart';
+import 'steps/view_ages.dart';
+import 'steps/view_user_count.dart';
+import 'steps/logout.dart';
+// import 'steps/search.dart';
 
 void main() {
   runApp(const MyApp()); 
@@ -64,6 +72,7 @@ class _MyHomepageState extends State<MyHomepage>
   late List<Widget Function()> stepWidgets; //step widget im stuck
   late List<String> answers;
   late List<Map<String,dynamic>> pets;
+  late Map<String, dynamic> user;
 
   Future<void> fetchInitialData() async {
     try {
@@ -197,6 +206,75 @@ class _MyHomepageState extends State<MyHomepage>
         });
       },
     ),
+    () => RetrieveData(baseUrl: baseUrl, id: id,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          user = data['user'] ?? {};
+          currentStep = 10;
+        });
+      },
+    ),
+    () => ModifyRole(baseUrl: baseUrl, user: user,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 11;
+        });
+      },
+    ),
+    () => ReFetchAllPets(baseUrl: baseUrl,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          pets = (data['pets'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+          currentStep = 12;
+        });
+      },
+    ),
+    () => ViewPet4(baseUrl: baseUrl, pets: pets,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 13;
+        });
+      },
+    ),
+    () => DeletePet(baseUrl: baseUrl, petId: petId, message: message,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 14;
+        });
+      },
+    ),
+    () => ViewAges(
+      baseUrl: baseUrl,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 15;
+        });
+      },
+    ),
+    () => ViewUserCount(
+      baseUrl: baseUrl,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 16;
+        });
+      },
+    ),
+    () => Logout(
+      baseUrl: baseUrl,
+      onComplete: (data) {
+        setState(() {
+          message = data['message'] ?? '';
+          currentStep = 17;
+        });
+      },
+    ),
     
 
 
@@ -299,20 +377,22 @@ class _MyHomepageState extends State<MyHomepage>
                 ],
               ),
             ),
-            Flex(
-              direction: isMobile ? Axis.vertical : Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 500,
-                  child: _leftView(isMobile),
-                ),
-                SizedBox(
-                  width: 400,
-                  child: stepWidgets[currentStep](),
-                ),
-              ],
-            ),
+            currentStep >= 17
+            ? Center(child: _leftView(isMobile))
+            : Flex(
+                direction: isMobile ? Axis.vertical : Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 500,
+                    child: _leftView(isMobile),
+                  ),
+                  SizedBox(
+                    width: 400,
+                    child: stepWidgets[currentStep](),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
