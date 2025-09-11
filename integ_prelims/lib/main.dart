@@ -215,7 +215,7 @@ class _MyHomepageState extends State<MyHomepage>
         });
       },
     ),
-    () => ModifyRole(baseUrl: baseUrl, user: user,
+    () => ModifyRole(baseUrl: baseUrl, user: user, id: id,
       onComplete: (data) {
         setState(() {
           message = data['message'] ?? '';
@@ -223,7 +223,7 @@ class _MyHomepageState extends State<MyHomepage>
         });
       },
     ),
-    () => ReFetchAllPets(baseUrl: baseUrl,
+    () => ReFetchAllPets(baseUrl: baseUrl, id: id,
       onComplete: (data) {
         setState(() {
           message = data['message'] ?? '';

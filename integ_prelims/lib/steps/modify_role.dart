@@ -5,12 +5,14 @@ import '../widgets/build_info_tile.dart';
 
 class ModifyRole extends StatelessWidget{
   final String baseUrl;
+  final String id;
   final Map<String, dynamic> user;
   final void Function(Map<String, dynamic> data) onComplete;
 
   const ModifyRole({
     Key? key,
     required this.baseUrl,
+    required this.id,
     required this.user,
     required this.onComplete,
   }) : super(key: key);
@@ -19,7 +21,7 @@ class ModifyRole extends StatelessWidget{
     String role = "admin";
     try {
       final response = await http.patch(
-        Uri.parse("$baseUrl/users/${user['_id']}"),
+        Uri.parse("$baseUrl/users/$id"),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'role': role,

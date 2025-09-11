@@ -4,17 +4,19 @@ import 'dart:convert';
 
 class ReFetchAllPets extends StatelessWidget{
   final String baseUrl;
+  final String id;
   final void Function(Map<String, dynamic> data) onComplete;
 
   ReFetchAllPets({
     Key? key,
     required this.baseUrl,
+    required this.id,
     required this.onComplete,
   }) : super(key: key);
 
   Future <void> reFetchAllPets (BuildContext context) async {
     try{
-      final response = await http.get(Uri.parse("$baseUrl/pets")).timeout(Duration(seconds: 10));
+      final response = await http.get(Uri.parse("$baseUrl/pets?userId=$id")).timeout(Duration(seconds: 10));
       final data = json.decode(response.body) as Map<String, dynamic>;
       onComplete(data);
     }
