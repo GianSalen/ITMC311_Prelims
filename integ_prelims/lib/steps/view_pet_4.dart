@@ -40,8 +40,17 @@ class ViewPet4 extends StatelessWidget{
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "My pets:",
+              "All Pets:",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            SizedBox(height: 4),
+            Text(
+              "Only 10 pets are displayed for efficiency.",
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: isMobile ? 12 : 14,
+                fontStyle: FontStyle.italic,
+              ),
             ),
             SizedBox(height: 10),
             Container(
